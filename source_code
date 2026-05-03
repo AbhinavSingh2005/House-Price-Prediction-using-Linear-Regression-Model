@@ -13,3 +13,10 @@ data
 # making dataframe 
 df = pd.DataFrame(data)
 df
+
+# display the first few rows of the dataset 
+df.head()
+
+# check for missing values 
+print(df.isnull().sum())
+
