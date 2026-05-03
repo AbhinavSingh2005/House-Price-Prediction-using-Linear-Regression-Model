@@ -6,3 +6,10 @@ from sk.model_selection import train_test_split
 from sk.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 
+# load the dataset
+data = pd.read_csv("housing.csv")
+data
+
+# making dataframe 
+df = pd.DataFrame(data)
+df
