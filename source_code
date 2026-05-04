@@ -1,1 +1,82 @@
+# import libraries 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.model_selection import train_test_split
 
+
+# load the dataset 
+data = pd.read_csv("data.csv")
+data
+
+
+# make dataframe
+df = pd.DataFrame(data)
+df
+
+
+#dropping missing values 
+df_cleaned = df.drop_duplicates(subset = ['bedrooms', 'price'])
+df_cleaned
+
+
+# define the feature and target 
+X = df[['bedrooms']]
+y = df[['price']]
+
+
+# splitting data for training and testing 
+X_train, X_test, y_train, y_test = train_test_split (X, y, test_size = 0.10, random_state = 42)
+
+print ("Training set size is: ", X_train.shape[0])
+print ("Testing set size is: ", X_test.shape[0])
+
+
+# creating a linear regression model 
+model = LinearRegression()
+
+# training the model 
+model.fit  (X_train, y_train)
+
+
+# intercept and coefficient 
+print ("Intercept is: ", model.intercept_)
+print ("Coefficient is: ", model.coef_)
+
+
+# predict hosue prices for the test set 
+y_pred = model.predict (X_test)
+
+
+# Display the first few predictions alongside the actual values
+predictions = pd.DataFrame({
+    'Actual': y_test.values.flatten(), 
+    'Predicted': y_pred.flatten()
+})
+predictions.head()
+
+
+# plotting the actual data points 
+plt.scatter (X_test, y_test, color = "blue", label = "Actual")
+
+# plotting the regression line
+plt.plot (X_test, y_pred, color = "red", label = "Predicted")
+
+# labels and titles 
+plt.xlabel ("Number of rooms")
+plt.ylabel ("House Prices")
+plt.title ("Simple Linear Regression: Number of Bedrooms vs House Price")
+plt.legend() 
+plt.show()
+
+
+# calculating mean squared error
+mse = mean_squared_error(y_test, y_pred)
+print("Mean squared error is: ", mse)
+
+
+# r2 score
+r2 = r2_score (y_test, y_pred)
+print("\nr2 score is: ", r2)
